@@ -2,23 +2,21 @@ from functools import wraps
 from flask import request, jsonify
 import jwt
 from ..routes import Config
+from ..model import User
 
 
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = request.args.get('token')
-
         token = None
-
-        if 'x-access-tokens' in request.headers:
-            token = request.headers['x-access-tokens']
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
         if not token:
-            return jsonify({"message": 'Token is missing'}), 403
+            return jsonify({"messsage": "token is missing"}), 401
         try:
-            data = jwt.decode(token, Config.SECRET_KEY)
+            data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
         except Exception as error:
-            return jsonify({"message": 'Token is missing or is invalid'}), 403
+            return jsonify({"message": 'Token is missing or is invalid'}), 401
         return f(*args, **kwargs)
     return decorated
 

@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from .config import DevelopmentConfig, TestingConfig, ProductionConfig
 from os import getenv
+from flask_marshmallow import Marshmallow
 
 db = SQLAlchemy()
 
@@ -26,4 +27,5 @@ def create_app():
         db.create_all()
         return app
 
-    return app
+app = create_app()
+ma = Marshmallow(app)
