@@ -1,15 +1,25 @@
 from ..model.User import Address, User
 from .. import ma
 
-class UserSchema(ma.SQLAlchemyAutoSchema):
+
+class AddressSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        fields = ['id', 'firstName', 'lastName', 'birthdate', 'street', 'city', 'number']
-        model = User
+        fields = ['id', 'street', 'number', 'city', 'user_id']
+        model = Address
         load_instance = True
         include_fk = True
         #Fields to skip during serialization
-        # load_only = 'met'
-        
+        load_only = 'addresses'
+
+address_schema = AddressSchema()    
+addresses_schema = AddressSchema(many=True)
+
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    addresses = ma.Nested(AddressSchema, only=('id', 'street', 'number', 'city'), many=True)
+    class Meta:
+        model = User
+        load_instance = True
+        include_fk = True
+
 user_schema = UserSchema()
 many_users_schema = UserSchema(many=True)
-
