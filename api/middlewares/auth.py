@@ -12,11 +12,12 @@ def token_required(f):
         if 'x-access-token' in request.headers:
             token = request.headers['x-access-token']
         if not token:
-            return jsonify({"messsage": "token is missing"}), 401
+            return jsonify({"message": "token is missing"}), 401
         try:
             data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
         except Exception as error:
-            return jsonify({"message": 'Token is missing or is invalid'}), 401
+            print(type(error))
+            return jsonify({"message": f'Token is invalid'}), 401
         return f(*args, **kwargs)
     return decorated
 
