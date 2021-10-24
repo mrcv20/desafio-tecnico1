@@ -12,6 +12,16 @@ Tecnologias usadas:
 
 ## Preparando o ambiente virtual
 Na pasta raiz digite os comandos
+
+Windows
+```
+pip install virtualenv
+
+virtualenv ./env
+
+source env/Scripts/activate
+```
+Linux
 ```
 pip install virtualenv
 
