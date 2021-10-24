@@ -1,7 +1,5 @@
-from re import template
-from flask import Flask, jsonify
+from flask import Flask
 from .config import DevelopmentConfig, TestingConfig, ProductionConfig
-from os import getenv
 from flask_marshmallow import Marshmallow
 from .database.database import engine, Base
 from flask_swagger_ui import get_swaggerui_blueprint

@@ -1,11 +1,8 @@
-from flask import Blueprint, jsonify, request, make_response, render_template, send_from_directory
+from flask import Blueprint
 from .config import Config
 from .middlewares.auth import token_required
 from .controllers.usersController import UserController
 from .controllers.authController import AuthController
-from apispec_webframeworks.flask import FlaskPlugin
-from apispec import APISpec
-from apispec.ext.marshmallow import MarshmallowPlugin
 from marshmallow import *
 
 
