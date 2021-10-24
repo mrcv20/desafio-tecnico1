@@ -2,7 +2,6 @@ from functools import wraps
 from flask import request, jsonify
 import jwt
 from ..routes import Config
-from ..model import User
 
 
 def token_required(f):
@@ -16,7 +15,6 @@ def token_required(f):
         try:
             data = jwt.decode(token, Config.SECRET_KEY, algorithms=["HS256"])
         except Exception as error:
-            print(type(error))
             return jsonify({"message": f'Token is invalid'}), 401
         return f(*args, **kwargs)
     return decorated

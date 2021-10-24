@@ -1,6 +1,6 @@
-
 from os import path
 import os
+
 
 basedir = path.abspath(path.dirname(__file__))
 

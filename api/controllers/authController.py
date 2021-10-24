@@ -11,23 +11,17 @@ class AuthController:
     def signup_user():
         data = request.get_json()
         if not data:
-            return jsonify({"message": "missing payload"})
+            return jsonify({"message": "missing payload"}), 400
         try:
-            # hashed_password = generate_password_hash(data['password'], method='sha256')
             if len(data) > 5 or len(data['addresses']) > 2:
                 return jsonify({"message": "paylod incorret, please check params"}), 400
             elif len(data['addresses'][0]) > 3 or len(data['addresses'][1]) > 3:
-                return jsonify({"message": "payload incorret, please the the addresses param"}), 400
-            # elif len(data['password']) < 6:
-            #     return jsonify({"message": "P
-            # assword need at least 6 characters"}), 400
+                return jsonify({"message": "payload incorret, please check the addresses param"}), 400
             elif len(data['firstName']) < 2:
                 return jsonify({"message": "First name too short"}), 400
         except Exception as error:
             if type(error) == KeyError:
                 return jsonify({"message": f"param {error} is missing or incorrectw"}), 400
-            elif not data['password']:
-                return jsonify({"message": f"User {data['firstName']} registered successfully"})
             else:
                 return jsonify({"message": "could not verify"}), 500
         try:
@@ -54,9 +48,10 @@ class AuthController:
             session.add(new_address2)
             session.commit()
         except Exception as error:
+            print(error)
             if type(error) == KeyError:
-                if 'street' or 'number' or 'city' in str(error):
-                    return jsonify({"message": f"param {error} is missing or is incorrect, check the addresses"})
+                if 'street' in str(error) or 'number' in str(error) or 'city' in str(error):
+                    return jsonify({"message": f"param {error} is missing or is incorrect, check the addresses"}), 400
                 return jsonify({"message": f"{error} is missing or incorrect"}), 400
             elif type(error) == ValueError:
                 if 'time data' in str(error):

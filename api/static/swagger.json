@@ -1,0 +1,244 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "API para cadastro de usuários com autorização JSON WEB TOKENS",
+      "version": "1.0.0",
+      "title": "API de cadastro de usuários",
+      "license": {
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+         "components": {
+            "securitySchemes": {
+                "UserSecurity": {
+                    "type": "apiKey",
+                    "scheme": "header",
+                    "name": "x-access-token"
+                }
+            },
+          "schemas": {
+              "CreateUser": {
+                  "type": "object",
+                  "properties": {
+                      "firstName": {
+                      "type": "string"
+                      },
+                      "lastName": {
+                      "type": "string"
+                      },
+                      "birthdate": {
+                      "type": "string"
+                      },
+                      "addresses": {
+                          "type": "array",
+                          "items": {
+                              "type": "object",
+                              "properties": {
+                                "street": {
+                                    "type": "string"
+                                },
+                                "number": {
+                                    "type": "integer"
+                                },
+                                "city": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": {
+                                "type": "object",
+                                "properties": {
+                                "street": {
+                                    "type": "string"
+                                },
+                                "number": {
+                                    "type": "integer"
+                                },
+                                "city": {
+                                    "type": "string"
+                                }
+                            }
+                            }
+                          }
+                      }
+                  }
+              },
+              "ID":{
+              "type" : "integer",
+              "properties" : {
+                  "name" : {
+                      "type" : "integer"
+                  }
+              }
+          },
+              "UpdateUser":{
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                    "type": "string"
+                    },
+                    "lastName": {
+                    "type": "string"
+                    },
+                    "birthdate": {
+                    "type": "string"
+                    },
+                    "addresses": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                              "street": {
+                                  "type": "string"
+                              },
+                              "number": {
+                                  "type": "integer"
+                              },
+                              "city": {
+                                  "type": "string"
+                              }
+                          }
+                        }
+                    }
+                }
+            }
+          }
+      },
+       "paths": {
+          "/auth/signup": {
+              "post": {
+                "tags": [
+                    "Create user in database"
+                ],
+              "summary": "Add user",
+              "requestBody": {
+              "description": "Add new user in database",
+              "required": true,
+              "content": {
+                  "application/json": {
+                  "schema": {
+                      "$ref": "#/components/schemas/CreateUser"
+                      }
+                  }
+              }
+              },
+              "responses": {
+                  "201": {
+                      "description": "Created",
+                      "schema": {
+                      "$ref": "#/components/schemas/CreateUser"
+                      }
+                  },
+                  "400": {
+                      "description": "Bad request",
+                      "schema": {
+                      "$ref": "#/components/schemas/CreateUser"
+                      }
+              }
+              }
+              }
+          },
+          "/users":{
+            "get" :{
+                "tags": [
+                    "List Users"
+                ],
+                "summary": "List all users",
+               
+                "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                    "$ref": "#/components/schemas/CreateUser"
+                    }
+                },
+                "404": {
+                    "description": "NOT FOUND",
+                    "schema": {
+                    "$ref": "#/components/schemas/CreateUser"
+                    }
+            }
+            }
+          }
+        },
+        "/users/{id}":{
+            "delete" :{
+                "tags": [
+                    "Delete user by ID"
+                ],
+                "parameters": [{
+                    "name": "id",
+                    "in": "path",
+                    "description": "user ID to delete",
+                    "required": true,
+                    "type": "integer",
+                    "schema" : {
+                        "$ref": "#/components/schemas/ID"
+                    }
+                }],
+                "summary": "delete user by ID",
+               
+                "responses": {
+                "200": {
+                    "description": "Ok deleted",
+                    "schema": {
+                    "$ref": "#/components/schemas/CreateUser"
+                    }
+                },
+                "404": {
+                    "description": "Not Found",
+                    "schema": {
+                    "$ref": "#/components/schemas/CreateUser"
+                    }
+            }
+            }
+            },
+          "put" :{
+            "tags": [
+                "Update user by ID"
+            ],
+            "parameters": [{
+                "name": "id",
+                "in": "path",
+                "description": "user ID to update",
+                "required": true,
+                "type": "integer",
+                "schema" : {
+                    "$ref": "#/components/schemas/ID"
+                }
+            }],
+            "summary": "update user by ID",
+            "requestBody": {
+                "description": "Update existing user by ID",
+                "required": true,
+                "content":
+                {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/UpdateUser"
+                        }
+                    }
+                }
+            },
+            "responses": {
+            "200": {
+                "description": "OK",
+                "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+                }
+            },
+            "404": {
+                "description": "Not Found",
+                "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+                }
+                }
+                }
+            }
+        }
+        },
+        "security": {
+            "UserSecurity": []
+    }
+}
+
+

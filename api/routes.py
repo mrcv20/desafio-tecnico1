@@ -1,16 +1,20 @@
-from flask import Blueprint, jsonify, request, make_response
+from flask import Blueprint, jsonify, request, make_response, render_template, send_from_directory
 from .config import Config
 from .middlewares.auth import token_required
 from .controllers.usersController import UserController
 from .controllers.authController import AuthController
-from apispec import APISpec
 from apispec_webframeworks.flask import FlaskPlugin
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+from marshmallow import *
+
 
 bp_routes = Blueprint('routes', __name__)
 
 @bp_routes.route('auth/signup', methods=['POST'])
-def register():
+def post_signup():
     return AuthController.signup_user()
+
 @bp_routes.route('/users', methods=['GET'])
 @token_required
 def list_users():
@@ -29,3 +33,4 @@ def delete_user(id):
 @bp_routes.route('/login', methods=['GET'])
 def login():
     return AuthController.login_user()
+

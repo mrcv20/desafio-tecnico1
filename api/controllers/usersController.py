@@ -10,7 +10,7 @@ class UserController:
         try:
             users = session.query(User).join(Address, (User.id == Address.user_id)).all()
             if not users:
-                return jsonify({"message": "users not found"})
+                return jsonify({"message": "users not found"}), 404
         except Exception as error:
             return jsonify({"message": f"{error}"}), 500
         return jsonify({"users": many_users_schema.dump(users)}), 200
@@ -25,7 +25,7 @@ class UserController:
             session.close()
         except Exception as error:
             return error
-        return jsonify({"message": "User deleted sucessfully"})
+        return jsonify({"message": "User deleted successfully"})
 
     def update_user(id):
         user_to_update = session.query(User).filter(User.id == id).first()
@@ -56,6 +56,6 @@ class UserController:
                 print(error)
                 return jsonify({"message": "Could not verify"}), 500
             
-        return jsonify({"message": "User updated sucessfully"})
+        return jsonify({"message": "User updated successfully"})
 
 
